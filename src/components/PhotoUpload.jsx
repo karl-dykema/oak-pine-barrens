@@ -31,6 +31,7 @@ export default function PhotoUpload({ onClose }) {
   const [preview, setPreview]         = useState(null)
   const [compressed, setCompressed]   = useState(null)
   const [duplicate, setDuplicate]     = useState(null)
+  const [exifMeta, setExifMeta]       = useState(null)
   const [form, setForm]               = useState(EMPTY_FORM)
   const [selectedSpecies, setSelectedSpecies] = useState([])
   const [error, setError]             = useState(null)
@@ -45,8 +46,28 @@ export default function PhotoUpload({ onClose }) {
     setStep('processing')
 
     try {
-      // Extract EXIF GPS before compression strips it
-      const gps = await exifr.gps(file).catch(() => null)
+      // Extract EXIF before compression strips it
+      const [gps, exif] = await Promise.all([
+        exifr.gps(file).catch(() => null),
+        exifr.parse(file, {
+          pick: ['Make','Model','LensModel','FocalLength','FNumber','ExposureTime',
+                 'ISO','DateTimeOriginal','ImageWidth','ImageHeight','Orientation'],
+        }).catch(() => null),
+      ])
+
+      const camera = exif ? {
+        make:          exif.Make         ?? null,
+        model:         exif.Model        ?? null,
+        lens:          exif.LensModel    ?? null,
+        focal_length:  exif.FocalLength  != null ? `${exif.FocalLength}mm` : null,
+        aperture:      exif.FNumber      != null ? `f/${exif.FNumber}`     : null,
+        shutter:       exif.ExposureTime != null ? `1/${Math.round(1/exif.ExposureTime)}s` : null,
+        iso:           exif.ISO          ?? null,
+        taken_at:      exif.DateTimeOriginal?.toISOString() ?? null,
+        width:         exif.ImageWidth   ?? null,
+        height:        exif.ImageHeight  ?? null,
+      } : null
+      setExifMeta(camera)
 
       // Compress
       const comp = await compressImage(file)
@@ -58,12 +79,13 @@ export default function PhotoUpload({ onClose }) {
       const dup = findDuplicate(hash, getAllPhotos())
       setDuplicate(dup)
 
-      // Pre-fill title and GPS from EXIF
+      // Pre-fill title, date, and GPS from EXIF
       setForm((f) => ({
         ...f,
         title: file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' '),
-        lat: gps?.latitude  != null ? String(gps.latitude.toFixed(6))  : f.lat,
-        lon: gps?.longitude != null ? String(gps.longitude.toFixed(6)) : f.lon,
+        date:  camera?.taken_at ? camera.taken_at.slice(0, 10) : f.date,
+        lat:   gps?.latitude  != null ? String(gps.latitude.toFixed(6))  : f.lat,
+        lon:   gps?.longitude != null ? String(gps.longitude.toFixed(6)) : f.lon,
       }))
       setStep('form')
     } catch (e) {
@@ -106,6 +128,7 @@ export default function PhotoUpload({ onClose }) {
         name: form.locationName || null,
       },
       entry_id: form.entryId || null,
+      camera: exifMeta,
       hash: null,
       created_at: new Date().toISOString(),
     }
