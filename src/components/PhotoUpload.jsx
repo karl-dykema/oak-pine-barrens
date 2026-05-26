@@ -4,6 +4,7 @@ import { compressImage, computeHash, findDuplicate } from '../utils/imageUtils'
 import { scoreImage } from '../utils/inatCV'
 import { getAllPhotos } from '../utils/parsePhotos'
 import { getAllEntries } from '../utils/parseEntries'
+import SpeciesSelector from './SpeciesSelector'
 
 const AUTHOR_OPTIONS = [
   { value: 'karl',  label: 'Karl' },
@@ -32,7 +33,6 @@ export default function PhotoUpload({ onClose }) {
   const [duplicate, setDuplicate]     = useState(null)
   const [cvResults, setCvResults]     = useState([])
   const [cvLoading, setCvLoading]     = useState(false)
-  const [cvError, setCvError]         = useState(null)
   const [form, setForm]               = useState(EMPTY_FORM)
   const [selectedSpecies, setSelectedSpecies] = useState([])
   const [error, setError]             = useState(null)
@@ -61,7 +61,7 @@ export default function PhotoUpload({ onClose }) {
       setCvLoading(true)
       scoreImage(comp)
         .then((results) => { setCvResults(results); setCvLoading(false) })
-        .catch(() => { setCvError('Species ID unavailable — iNaturalist could not be reached.'); setCvLoading(false) })
+        .catch(() => { setCvLoading(false) })
 
       // 4. Pre-fill filename from original
       setForm((f) => ({ ...f, title: file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ') }))
@@ -83,22 +83,13 @@ export default function PhotoUpload({ onClose }) {
     if (file) processFile(file)
   }
 
-  function toggleSpecies(name) {
-    setSelectedSpecies((prev) =>
-      prev.includes(name) ? prev.filter((s) => s !== name) : [...prev, name]
-    )
-  }
-
   function setField(key) {
     return (e) => setForm((f) => ({ ...f, [key]: e.target.value }))
   }
 
   function handleSave() {
     const id = `photo-${Date.now()}`
-    const allSpecies = [
-      ...selectedSpecies,
-      ...form.species.split(',').map((s) => s.trim()).filter(Boolean),
-    ]
+    const allSpecies = selectedSpecies
     const allTags = form.tags.split(',').map((t) => t.trim()).filter(Boolean)
 
     const meta = {
@@ -198,37 +189,13 @@ export default function PhotoUpload({ onClose }) {
                 </div>
               </div>
 
-              {/* iNat CV species suggestions */}
-              <div>
-                <div className="text-xs font-sans font-semibold text-bark-500 uppercase tracking-wide mb-2">
-                  Species suggestions (iNaturalist CV)
-                </div>
-                {cvLoading && <p className="text-sm text-bark-400 font-sans">Identifying…</p>}
-                {cvError  && <p className="text-sm text-bark-400 font-sans">{cvError}</p>}
-                {!cvLoading && cvResults.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {cvResults.map((r) => (
-                      <button
-                        key={r.taxonId}
-                        type="button"
-                        onClick={() => toggleSpecies(r.name)}
-                        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-sans border transition-colors ${
-                          selectedSpecies.includes(r.name)
-                            ? 'bg-pine-600 text-white border-pine-600'
-                            : 'bg-white text-bark-700 border-bark-300 hover:border-pine-400'
-                        }`}
-                      >
-                        {r.thumbUrl && (
-                          <img src={r.thumbUrl} alt="" className="w-4 h-4 rounded-full object-cover" />
-                        )}
-                        <span className="italic">{r.name}</span>
-                        {r.common && <span className="not-italic text-bark-400">{r.common}</span>}
-                        <span className="text-bark-400">{r.score}%</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
+              {/* Species selector */}
+              <SpeciesSelector
+                selected={selectedSpecies}
+                onChange={setSelectedSpecies}
+                cvResults={cvResults}
+                cvLoading={cvLoading}
+              />
 
               {/* Metadata form */}
               <div className="grid gap-3">
@@ -255,10 +222,6 @@ export default function PhotoUpload({ onClose }) {
                 <div>
                   <label className="block text-xs font-sans font-medium text-bark-600 mb-1">Tags (comma-separated)</label>
                   <input className={inputCls} value={form.tags} onChange={setField('tags')} placeholder="lupine, bloom, east-opening" />
-                </div>
-                <div>
-                  <label className="block text-xs font-sans font-medium text-bark-600 mb-1">Additional species (comma-separated)</label>
-                  <input className={inputCls} value={form.species} onChange={setField('species')} placeholder="Any species not in suggestions above" />
                 </div>
                 <div>
                   <label className="block text-xs font-sans font-medium text-bark-600 mb-1">Location name</label>
