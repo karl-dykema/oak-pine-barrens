@@ -18,10 +18,10 @@ L.Icon.Default.mergeOptions({
 const SITE_COORDS = [43.45656837380997, -85.58916358026472]
 
 const stats = [
-  { label: 'Acres',        value: '40' },
-  { label: 'County',       value: 'Newaygo' },
-  { label: 'Funder',       value: 'LSFSC' },
-  { label: 'Season',       value: 'Summer 2026' },
+  { label: 'Acres',   value: '40' },
+  { label: 'County',  value: 'Newaygo, MI' },
+  { label: 'Program', value: 'LSFSC Intern' },
+  { label: 'Season',  value: 'Summer 2026' },
 ]
 
 export default function Home() {
@@ -51,13 +51,25 @@ export default function Home() {
 
       {/* Stats bar */}
       <section className="bg-sand-100 border-y border-sand-200">
-        <div className="max-w-5xl mx-auto px-4 py-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="max-w-5xl mx-auto px-4 pt-6 pb-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
           {stats.map(({ label, value }) => (
             <div key={label} className="text-center">
               <div className="font-serif text-2xl font-semibold text-pine-800">{value}</div>
               <div className="font-sans text-sm text-bark-600 mt-0.5">{label}</div>
             </div>
           ))}
+        </div>
+        <div className="max-w-5xl mx-auto px-4 pb-5 border-t border-sand-200 mt-2 pt-4">
+          <p className="font-sans text-sm text-bark-600 leading-relaxed text-center max-w-2xl mx-auto">
+            This project is supported by the{' '}
+            <strong className="text-bark-800">Lake States Fire Science Consortium (LSFSC)</strong>{' '}
+            intern program, funded by the Joint Fire Science Program and administered through
+            The Ohio State University. Program Manager{' '}
+            <strong className="text-bark-800">Jack McGowan-Stinski</strong> and Lead PI{' '}
+            <strong className="text-bark-800">Eric Toman</strong> provide programmatic oversight
+            and connect this work to the broader network of fire-dependent ecosystem research
+            across the Lake States region.
+          </p>
         </div>
       </section>
 

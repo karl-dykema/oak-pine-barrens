@@ -58,5 +58,27 @@
     "links": [
       { "label": "MNFI Profile", "url": "https://mnfi.anr.msu.edu/about/staff" }
     ]
+  },
+  {
+    "id": "jack-mcgowan-stinski",
+    "name": "Jack McGowan-Stinski",
+    "title": "Program Manager",
+    "org": "Lake States Fire Science Consortium (LSFSC)",
+    "bio": "Jack manages the activities of the Lake States Fire Science Consortium, liaising with researchers, land managers, and policymakers across the Lake States region. His background spans fire management and land stewardship with The Nature Conservancy, consulting as a certified Burn Boss, and seasonal work with the USFS and state DNRs. He is a co-founder of the Michigan Prescribed Fire Council and has helped launch prescribed fire councils in Illinois, Indiana, Ohio, Pennsylvania, and Wisconsin.",
+    "photo": null,
+    "links": [
+      { "label": "LSFSC", "url": "http://lakestatesfiresci.net/" }
+    ]
+  },
+  {
+    "id": "eric-toman",
+    "name": "Eric Toman",
+    "title": "Lead PI",
+    "org": "Lake States Fire Science Consortium (LSFSC)",
+    "bio": "Eric is the Lead Principal Investigator for the Lake States Fire Science Consortium, providing scientific leadership for the consortium's research and knowledge-exchange mission across fire-dependent ecosystems from Minnesota to New York. His work focuses on human dimensions of wildland fire management and the social factors that shape prescribed fire use on private and public lands.",
+    "photo": null,
+    "links": [
+      { "label": "LSFSC", "url": "http://lakestatesfiresci.net/" }
+    ]
   }
 ]
