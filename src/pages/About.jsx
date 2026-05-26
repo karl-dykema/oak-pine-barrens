@@ -9,11 +9,28 @@ export default function About() {
         <h2>Oak-Pine Barrens Ecology</h2>
         <p>
           Oak-pine barrens are fire-dependent ecosystems found on well-drained, nutrient-poor sandy
-          soils across the Great Lakes region. They are defined by a sparse, savanna-like canopy of
-          black oak (<em>Quercus velutina</em>) and jack pine (<em>Pinus banksiana</em>) over an
-          open ground layer of native grasses, sedges, lichens, and wildflowers. Without periodic
-          fire, these systems succeed to closed-canopy forest within a few decades, eliminating the
-          specialized species that depend on open, sunny conditions.
+          soils across the Great Lakes region. In Newaygo County, the characteristic overstory
+          species are black oak (<em>Quercus velutina</em>), white oak (<em>Quercus alba</em>),
+          and eastern white pine (<em>Pinus strobus</em>), growing in an open, savanna-like
+          structure over a diverse ground layer of native grasses, sedges, lichens, and
+          wildflowers. Without periodic fire, these systems succeed to closed-canopy forest within
+          a few decades — canopy cover closes, bare sand disappears, and the specialized plants and
+          animals that define barrens habitat are lost.
+        </p>
+
+        <h2>Logging History</h2>
+        <p>
+          The landscape around this site was profoundly shaped by two waves of industrial logging.
+          Beginning in the 1860s and peaking through the 1870s and 1880s, Newaygo County was at
+          the center of Michigan's white pine boom. Massive white pines were felled and floated
+          down the Muskegon River to mills at Muskegon, then shipped to Chicago and other markets —
+          much of the lumber going to rebuild Chicago after the Great Fire of 1871. By the late
+          1880s, the pine was effectively gone. A second wave followed in the early 1900s as loggers
+          returned for the remaining hardwoods, including the oaks. By roughly 1910, the county's
+          forests had been largely stripped. The cutover lands that remained — abandoned by failed
+          homesteaders on the sandy, infertile soils — are the origin of today's barrens remnants.
+          Fire, both accidental and intentional, shaped these post-logging landscapes for decades
+          before 20th-century fire suppression allowed them to grow back in.
         </p>
 
         <h2>Fire Dependence</h2>
@@ -22,8 +39,10 @@ export default function About() {
           practices that kept canopy cover low and bare sand exposed. Today, most barrens remnants
           require active management — primarily prescribed fire — to maintain their ecological
           character. This project uses prescribed burning as the primary restoration tool, combined
-          with mechanical removal of invasive shrubs such as glossy buckthorn
-          (<em>Frangula alnus</em>).
+          with targeted removal of encroaching woody vegetation. On this site, the main management
+          challenge is black cherry (<em>Prunus serotina</em>) sapling recruitment in the
+          openings — aggressive sprout growth that shades out lupine and other light-demanding
+          ground-layer species if left unchecked.
         </p>
 
         <h2>Karner Blue Butterfly</h2>
@@ -38,20 +57,21 @@ export default function About() {
 
         <h2>Eastern Box Turtle</h2>
         <p>
-          Eastern box turtles (<em>Terrapene carolina</em>) use oak-pine barrens for nesting, foraging,
-          and overwintering. The dry, sandy soils are ideal nesting substrate, and the diverse ground
-          layer provides food resources throughout the active season. This species is experiencing
-          range-wide population declines, and maintaining connected, fire-maintained barrens is
-          critical for its persistence in Michigan.
+          Eastern box turtles (<em>Terrapene carolina</em>) use oak-pine barrens for nesting,
+          foraging, and overwintering. The dry, sandy soils are ideal nesting substrate, and the
+          diverse ground layer provides food resources throughout the active season. This species
+          is experiencing range-wide population declines, and maintaining connected,
+          fire-maintained barrens is critical for its persistence in Michigan.
         </p>
 
         <h2>LSFSC Internship Context</h2>
         <p>
-          This project is supported by a 2026 internship through the Lake States Forest Stewardship
-          Center (LSFSC), a regional program that places emerging conservation professionals on
-          working landscapes to develop skills in ecological restoration, fire management, and
-          community science. Karl Dykema and Emily Guyot are leading the field work under the
-          guidance of LSFSC Program Director Stuart Goldman and site host Rod Denning.
+          This project is supported by a 2026 internship through the Lake States Fire Science
+          Consortium (LSFSC), a regional program funded by the Joint Fire Science Program and
+          administered through The Ohio State University. LSFSC connects fire-dependent ecosystem
+          research with on-the-ground management across the Lake States region. Karl Dykema and
+          Emily Guyot are leading the field work with support from project advisors Rod Denning,
+          Stuart Goldman, Jacob Lemon, and Tyler Bassett.
         </p>
 
         <h2>Forest Management Plan</h2>
