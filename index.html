@@ -13,22 +13,5 @@
     <!-- GoatCounter analytics — no cookies, no GDPR banner needed -->
     <script data-goatcounter="https://oak-pine-barrens.goatcounter.com/count"
             async src="//gc.zgo.at/count.js"></script>
-    <!-- Netlify Identity: handles email confirmation redirects -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script>
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on('init', (user) => {
-          // After email confirmation the widget lands back on the main site —
-          // redirect to /admin/ so the CMS opens automatically.
-          if (!user) {
-            window.netlifyIdentity.on('login', () => {
-              if (window.location.pathname !== '/admin/') {
-                document.location.href = '/admin/'
-              }
-            })
-          }
-        })
-      }
-    </script>
   </body>
 </html>

@@ -1,9 +1,14 @@
 export default function About() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">
-      <h1 className="font-serif text-2xl sm:text-3xl font-semibold text-pine-900 mb-6">
+      <h1 className="font-serif text-2xl sm:text-3xl font-semibold text-pine-900 mb-2">
         About the Project
       </h1>
+      <p className="text-sm text-bark-500 font-sans italic mb-6 leading-relaxed">
+        Monitoring Wildlife Responses and Promoting Fire-Dependent Oak-Pine Barrens Restoration
+        on Private Lands in Newaygo County: Intern-Driven Data Collection, Collaboration,
+        Social Media Outreach and Prescribed Burn Planning
+      </p>
 
       <article className="prose prose-bark max-w-none">
         <h2>Oak-Pine Barrens Ecology</h2>
@@ -66,22 +71,20 @@ export default function About() {
 
         <h2>LSFSC Internship Context</h2>
         <p>
-          This project is supported by a 2026 internship through the Lake States Fire Science
-          Consortium (LSFSC), a regional program funded by the Joint Fire Science Program and
-          administered through The Ohio State University. LSFSC connects fire-dependent ecosystem
-          research with on-the-ground management across the Lake States region. Karl Dykema and
-          Emily Guyot are leading the field work with support from project advisors Rod Denning,
-          Stuart Goldman, Jacob Lemon, and Tyler Bassett.
+          This project takes place entirely on privately owned land in Newaygo County, Michigan,
+          under the stewardship of landowner Karl Dykema. It is supported by a 2026 internship
+          through the Lake States Fire Science Consortium (LSFSC), a regional program funded by
+          the Joint Fire Science Program and administered through The Ohio State University. LSFSC
+          connects fire-dependent ecosystem research with on-the-ground management across the Lake
+          States region. Karl Dykema and intern Emily Guyot are leading the field work with
+          support from project advisors Rod Denning, Stuart Goldman, Jacob Lemon, and Tyler Bassett.
         </p>
 
         <h2>Forest Management Plan</h2>
         <p>
           A full forest management plan for the property is available on request. The plan outlines
           management objectives, burn unit prescriptions, monitoring protocols, and a 10-year
-          action schedule.{' '}
-          <a href="#" className="text-pine-600 hover:text-pine-800">
-            View the management plan (Google Drive) →
-          </a>
+          action schedule.
         </p>
       </article>
     </div>

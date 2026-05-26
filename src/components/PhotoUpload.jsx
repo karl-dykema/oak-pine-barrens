@@ -1,13 +1,10 @@
 import { useState, useRef, useCallback } from 'react'
 import { format } from 'date-fns'
 import { compressImage, computeHash, findDuplicate } from '../utils/imageUtils'
-import { scoreImage } from '../utils/inatCV'
-import exifr from 'exifr'
 import { getAllPhotos } from '../utils/parsePhotos'
 import { getAllEntries } from '../utils/parseEntries'
-import { commitPhoto } from '../utils/gitGateway'
-import { useNetlifyIdentity } from '../hooks/useNetlifyIdentity'
 import SpeciesSelector from './SpeciesSelector'
+import exifr from 'exifr'
 
 const AUTHOR_OPTIONS = [
   { value: 'karl',  label: 'Karl' },
@@ -30,18 +27,14 @@ const EMPTY_FORM = {
 }
 
 export default function PhotoUpload({ onClose }) {
-  const { user } = useNetlifyIdentity()
-  const [step, setStep]               = useState('drop')   // drop | processing | form | committing | done
+  const [step, setStep]               = useState('drop')   // drop | processing | form | done
   const [preview, setPreview]         = useState(null)
   const [compressed, setCompressed]   = useState(null)
   const [duplicate, setDuplicate]     = useState(null)
-  const [cvResults, setCvResults]     = useState([])
-  const [cvLoading, setCvLoading]     = useState(false)
   const [form, setForm]               = useState(EMPTY_FORM)
   const [selectedSpecies, setSelectedSpecies] = useState([])
   const [error, setError]             = useState(null)
   const [outputJson, setOutputJson]   = useState(null)
-  const [commitError, setCommitError] = useState(null)
   const inputRef = useRef()
 
   const entries = getAllEntries()
@@ -52,26 +45,20 @@ export default function PhotoUpload({ onClose }) {
     setStep('processing')
 
     try {
-      // 1. Extract EXIF GPS before compression strips it
+      // Extract EXIF GPS before compression strips it
       const gps = await exifr.gps(file).catch(() => null)
 
-      // 2. Compress
+      // Compress
       const comp = await compressImage(file)
       setCompressed(comp)
       setPreview(URL.createObjectURL(comp))
 
-      // 3. Duplicate detection
+      // Duplicate detection
       const hash = await computeHash(comp)
       const dup = findDuplicate(hash, getAllPhotos())
       setDuplicate(dup)
 
-      // 4. iNat CV — fire and don't block the form
-      setCvLoading(true)
-      scoreImage(comp)
-        .then((results) => { setCvResults(results); setCvLoading(false) })
-        .catch(() => { setCvLoading(false) })
-
-      // 5. Pre-fill title and GPS from EXIF
+      // Pre-fill title and GPS from EXIF
       setForm((f) => ({
         ...f,
         title: file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' '),
@@ -102,7 +89,6 @@ export default function PhotoUpload({ onClose }) {
 
   function handleSave() {
     const id = `photo-${Date.now()}`
-    const allSpecies = selectedSpecies
     const allTags = form.tags.split(',').map((t) => t.trim()).filter(Boolean)
 
     const meta = {
@@ -113,7 +99,7 @@ export default function PhotoUpload({ onClose }) {
       date: form.date,
       author: form.author,
       tags: allTags,
-      species: allSpecies,
+      species: selectedSpecies,
       location: {
         lat: form.lat ? parseFloat(form.lat) : null,
         lon: form.lon ? parseFloat(form.lon) : null,
@@ -124,18 +110,8 @@ export default function PhotoUpload({ onClose }) {
       created_at: new Date().toISOString(),
     }
 
-    const output = { id, meta }
-    setOutputJson(output)
-
-    if (user) {
-      setStep('committing')
-      setCommitError(null)
-      commitPhoto(id, compressed, meta)
-        .then(() => setStep('done'))
-        .catch((err) => { setCommitError(err.message); setStep('done') })
-    } else {
-      setStep('done')
-    }
+    setOutputJson({ id, meta })
+    setStep('done')
   }
 
   function downloadJson() {
@@ -179,7 +155,7 @@ export default function PhotoUpload({ onClose }) {
               onClick={() => inputRef.current.click()}
             >
               <p className="text-bark-500 font-sans text-sm mb-2">Drop a photo here, or click to browse</p>
-              <p className="text-bark-400 font-sans text-xs">Will be compressed to under 1 MB · Species ID via iNaturalist</p>
+              <p className="text-bark-400 font-sans text-xs">Compressed to under 1 MB · GPS auto-filled from EXIF</p>
               <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={onFileChange} />
               {error && <p className="mt-3 text-red-600 text-sm font-sans">{error}</p>}
             </div>
@@ -216,8 +192,6 @@ export default function PhotoUpload({ onClose }) {
               <SpeciesSelector
                 selected={selectedSpecies}
                 onChange={setSelectedSpecies}
-                cvResults={cvResults}
-                cvLoading={cvLoading}
               />
 
               {/* Metadata form */}
@@ -281,41 +255,16 @@ export default function PhotoUpload({ onClose }) {
             </>
           )}
 
-          {/* COMMITTING */}
-          {step === 'committing' && (
-            <div className="text-center py-10 text-bark-500 font-sans text-sm">
-              Saving to repository…
-            </div>
-          )}
-
           {/* DONE */}
           {step === 'done' && outputJson && (
             <div className="flex flex-col gap-4">
-              {commitError ? (
-                <div className="bg-red-50 border border-red-300 rounded-lg p-4 text-sm font-sans text-red-800">
-                  <p className="font-semibold mb-1">Commit failed — download and add manually:</p>
-                  <p className="text-xs text-red-600 mb-2">{commitError}</p>
-                  <ul className="list-disc list-inside text-red-700 space-y-0.5">
-                    <li>Image → <code className="bg-red-100 px-1 rounded">public/photos/{outputJson.id}.jpg</code></li>
-                    <li>Metadata → <code className="bg-red-100 px-1 rounded">data/photos/{outputJson.id}.json</code></li>
-                  </ul>
-                </div>
-              ) : user ? (
-                <div className="bg-pine-50 border border-pine-200 rounded-lg p-4 text-sm font-sans text-pine-800">
-                  <p className="font-semibold">Saved to repository.</p>
-                  <p className="text-xs text-pine-600 mt-1">
-                    Both files committed — the site will rebuild in ~1 minute.
-                  </p>
-                </div>
-              ) : (
-                <div className="bg-sand-50 border border-sand-200 rounded-lg p-4 text-sm font-sans text-bark-700">
-                  <p className="font-semibold mb-1">Download and commit both files to the repo:</p>
-                  <ul className="list-disc list-inside text-bark-600 space-y-0.5">
-                    <li>Image → <code className="bg-sand-100 px-1 rounded">public/photos/{outputJson.id}.jpg</code></li>
-                    <li>Metadata → <code className="bg-sand-100 px-1 rounded">data/photos/{outputJson.id}.json</code></li>
-                  </ul>
-                </div>
-              )}
+              <div className="bg-sand-50 border border-sand-200 rounded-lg p-4 text-sm font-sans text-bark-700">
+                <p className="font-semibold mb-1">Download both files and commit them to the repo:</p>
+                <ul className="list-disc list-inside text-bark-600 space-y-0.5">
+                  <li>Image → <code className="bg-sand-100 px-1 rounded">public/photos/{outputJson.id}.jpg</code></li>
+                  <li>Metadata → <code className="bg-sand-100 px-1 rounded">data/photos/{outputJson.id}.json</code></li>
+                </ul>
+              </div>
               <div className="flex gap-3">
                 <button onClick={downloadImage} className="btn-primary">Download image</button>
                 <button onClick={downloadJson} className="btn-outline">Download JSON</button>

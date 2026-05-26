@@ -1,8 +1,10 @@
 import { useState, lazy, Suspense } from 'react'
 
+const BASE = import.meta.env.BASE_URL  // e.g. /oak-pine-barrens/
 function photoSrc(filename) {
   if (!filename) return null
-  return filename.startsWith('/') ? filename : `/photos/${filename}`
+  const name = filename.startsWith('/photos/') ? filename.slice(8) : filename.replace(/^\//, '')
+  return `${BASE}photos/${name}`
 }
 import { format, parseISO } from 'date-fns'
 import { usePhotos } from '../hooks/usePhotos'

@@ -46,11 +46,11 @@ export default function Home() {
             Oak-Pine Barrens Restoration Project
           </h1>
           <p className="text-bark-300 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
-            A 40-acre oak-pine barrens in Newaygo County, Michigan is being restored through
-            prescribed fire, invasive species removal, and native plant monitoring. This site
-            supports rare species including the federally endangered Karner blue butterfly and
-            the eastern box turtle. Our work is guided by the Lake States Forest Stewardship
-            Center and funded through the 2026 internship program.
+            A 40-acre privately owned oak-pine barrens in Newaygo County, Michigan is being
+            restored through prescribed fire, invasive species removal, and native plant monitoring.
+            This site supports rare species including the federally endangered Karner blue butterfly
+            and the eastern box turtle. Our work is supported by the Lake States Fire Science
+            Consortium (LSFSC) through the 2026 internship program.
           </p>
           <div className="flex flex-wrap gap-3 justify-center mt-8">
             <Link to="/journal" className="btn-primary">Read the Field Journal</Link>
