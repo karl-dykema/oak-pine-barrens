@@ -1,0 +1,56 @@
+[
+  {
+    "id": "karl-dykema",
+    "name": "Karl Dykema",
+    "title": "Project Lead / LSFSC Intern",
+    "org": "Lake States Forest Stewardship Center",
+    "bio": "Karl is coordinating the Oak-Pine Barrens Restoration Project as part of his LSFSC internship. His work focuses on fire-dependent ecosystem management, Karner blue butterfly habitat, and community science outreach.",
+    "photo": null,
+    "links": []
+  },
+  {
+    "id": "emily-guyot",
+    "name": "Emily Guyot",
+    "title": "Field Botanist / LSFSC Intern",
+    "org": "Lake States Forest Stewardship Center",
+    "bio": "Emily leads botanical surveys and monitoring transects for the project. She specializes in understory plant communities of sand barrens ecosystems and brings expertise in lupine population ecology.",
+    "photo": null,
+    "links": []
+  },
+  {
+    "id": "rod-denning",
+    "name": "Rod Denning",
+    "title": "Landowner / Site Host",
+    "org": "",
+    "bio": "Rod owns and stewards the 40-acre parcel in Newaygo County. His long-term vision for the property as wildlife habitat made this restoration project possible. He has been involved in land stewardship in west Michigan for over 20 years.",
+    "photo": null,
+    "links": []
+  },
+  {
+    "id": "stuart-goldman",
+    "name": "Stuart Goldman",
+    "title": "Program Director",
+    "org": "Lake States Forest Stewardship Center",
+    "bio": "Stuart oversees the LSFSC internship program and serves as the primary advisor for the Oak-Pine Barrens project. He brings decades of experience in Great Lakes fire ecology and private lands conservation.",
+    "photo": null,
+    "links": []
+  },
+  {
+    "id": "jacob-lemon",
+    "name": "Jacob Lemon",
+    "title": "GIS & Remote Sensing Specialist",
+    "org": "LSFSC",
+    "bio": "Jacob supports the project with spatial analysis, burn unit mapping, and aerial imagery interpretation. He is developing the vegetation monitoring protocols that will be used across LSFSC partner sites.",
+    "photo": null,
+    "links": []
+  },
+  {
+    "id": "tyler-bassett",
+    "name": "Tyler Bassett",
+    "title": "Prescribed Fire Specialist",
+    "org": "Michigan DNR",
+    "bio": "Tyler serves as the prescribed fire lead for the project, working with the DNR fire crew to plan and execute the burn program. He has conducted burns across hundreds of fire-dependent ecosystems in the Great Lakes region.",
+    "photo": null,
+    "links": []
+  }
+]

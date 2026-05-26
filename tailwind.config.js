@@ -1,0 +1,72 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ['./index.html', './src/**/*.{js,jsx}'],
+  theme: {
+    extend: {
+      colors: {
+        bark: {
+          50:  '#faf7f2',
+          100: '#f0e8d8',
+          200: '#e0cfb0',
+          300: '#ccb080',
+          400: '#b8915a',
+          500: '#a07840',
+          600: '#866030',
+          700: '#6b4a24',
+          800: '#4f3419',
+          900: '#352210',
+        },
+        pine: {
+          50:  '#f0f4ee',
+          100: '#dce8d8',
+          200: '#b8d1b0',
+          300: '#8fb585',
+          400: '#6a9960',
+          500: '#4d7d42',
+          600: '#3a6330',
+          700: '#2d4e25',
+          800: '#1f371a',
+          900: '#122310',
+        },
+        sand: {
+          50:  '#fdfbf7',
+          100: '#f5f0e4',
+          200: '#ebe0c4',
+          300: '#d9ca9e',
+          400: '#c4b070',
+          500: '#ad924a',
+          600: '#8c7335',
+          700: '#6b5426',
+          800: '#4a3818',
+          900: '#2d200c',
+        },
+      },
+      fontFamily: {
+        serif: ['Lora', 'Georgia', 'serif'],
+        sans:  ['Inter', 'system-ui', 'sans-serif'],
+      },
+      typography: (theme) => ({
+        bark: {
+          css: {
+            '--tw-prose-body':        theme('colors.bark[800]'),
+            '--tw-prose-headings':    theme('colors.pine[800]'),
+            '--tw-prose-links':       theme('colors.pine[600]'),
+            '--tw-prose-bold':        theme('colors.bark[900]'),
+            '--tw-prose-counters':    theme('colors.sand[600]'),
+            '--tw-prose-bullets':     theme('colors.sand[400]'),
+            '--tw-prose-hr':          theme('colors.bark[200]'),
+            '--tw-prose-quotes':      theme('colors.pine[700]'),
+            '--tw-prose-quote-borders': theme('colors.sand[300]'),
+            '--tw-prose-captions':    theme('colors.bark[500]'),
+            '--tw-prose-code':        theme('colors.pine[700]'),
+            '--tw-prose-pre-code':    theme('colors.bark[100]'),
+            '--tw-prose-pre-bg':      theme('colors.pine[800]'),
+            '--tw-prose-th-borders':  theme('colors.bark[300]'),
+            '--tw-prose-td-borders':  theme('colors.bark[200]'),
+          },
+        },
+      }),
+    },
+  },
+  plugins: [require('@tailwindcss/typography')],
+}
