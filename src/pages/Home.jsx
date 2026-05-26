@@ -15,7 +15,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl:     markerShadow,
 })
 
-const SITE_COORDS = [43.5081, -85.7967]
+const SITE_COORDS = [43.45656837380997, -85.58916358026472]
 
 const stats = [
   { label: 'Acres',        value: '40' },
@@ -84,7 +84,7 @@ export default function Home() {
           </MapContainer>
         </div>
         <p className="text-sm text-bark-500 mt-2 font-sans">
-          43.5081° N, 85.7967° W &mdash; Newaygo County, Michigan
+          43.4566° N, 85.5892° W &mdash; Newaygo County, Michigan
         </p>
       </section>
 

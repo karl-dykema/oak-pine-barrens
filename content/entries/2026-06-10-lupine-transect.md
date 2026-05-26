@@ -10,8 +10,8 @@ tags:
   - monitoring
   - baseline
 location:
-  lat: 43.5081
-  lon: -85.7967
+  lat: 43.45656837380997
+  lon: -85.58916358026472
   name: Multiple Patches
 photos: []
 species:

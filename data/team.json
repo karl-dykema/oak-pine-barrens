@@ -2,55 +2,61 @@
   {
     "id": "karl-dykema",
     "name": "Karl Dykema",
-    "title": "Project Lead / LSFSC Intern",
-    "org": "Lake States Forest Stewardship Center",
-    "bio": "Karl is coordinating the Oak-Pine Barrens Restoration Project as part of his LSFSC internship. His work focuses on fire-dependent ecosystem management, Karner blue butterfly habitat, and community science outreach.",
+    "title": "Project Lead / Landowner",
+    "org": "",
+    "bio": "Karl owns the 40-acre oak-pine barrens parcel in Newaygo County and has been working toward its restoration for several years. He leads the day-to-day project work, coordinating the burn program, invasive removal, and species monitoring.",
     "photo": null,
     "links": []
   },
   {
     "id": "emily-guyot",
     "name": "Emily Guyot",
-    "title": "Field Botanist / LSFSC Intern",
-    "org": "Lake States Forest Stewardship Center",
-    "bio": "Emily leads botanical surveys and monitoring transects for the project. She specializes in understory plant communities of sand barrens ecosystems and brings expertise in lupine population ecology.",
+    "title": "LSFSC Intern",
+    "org": "Lake States Fire Science Consortium",
+    "bio": "Emily is a 2026 intern with the Lake States Fire Science Consortium, supporting botanical surveys, lupine monitoring transects, and field data collection on the project. She holds NWCG Firefighter Type 2 (FFT2) certification, qualifying her to serve on wildland and prescribed fire crews under agency supervision.",
     "photo": null,
     "links": []
   },
   {
     "id": "rod-denning",
     "name": "Rod Denning",
-    "title": "Landowner / Site Host",
-    "org": "",
-    "bio": "Rod owns and stewards the 40-acre parcel in Newaygo County. His long-term vision for the property as wildlife habitat made this restoration project possible. He has been involved in land stewardship in west Michigan for over 20 years.",
+    "title": "District Forester",
+    "org": "Newaygo Conservation District / Michigan Forestry Assistance Program",
+    "bio": "Rod is the District Forester serving Muskegon, Newaygo, and Oceana counties through the Michigan Forestry Assistance Program (MDARD). He holds a B.S. in Forestry from Michigan State University and an M.A. in Geography from Western Michigan University, and is both a GIS specialist and certified arborist. He provides forestry technical assistance and guidance to the project.",
     "photo": null,
     "links": []
   },
   {
     "id": "stuart-goldman",
     "name": "Stuart Goldman",
-    "title": "Program Director",
-    "org": "Lake States Forest Stewardship Center",
-    "bio": "Stuart oversees the LSFSC internship program and serves as the primary advisor for the Oak-Pine Barrens project. He brings decades of experience in Great Lakes fire ecology and private lands conservation.",
+    "title": "Conservation Coordinator, Western Lower Peninsula",
+    "org": "Michigan Nature Association",
+    "bio": "Stuart is a Conservation Coordinator for the Western Lower Peninsula at the Michigan Nature Association (MNA), bringing more than two decades of stewardship and ecological land management experience. He advises the project on restoration strategy and connects it to MNA's broader conservation network in west Michigan.",
     "photo": null,
-    "links": []
+    "links": [
+      { "label": "MNA Staff", "url": "https://www.michigannature.org/menus/staff.html" }
+    ]
   },
   {
     "id": "jacob-lemon",
     "name": "Jacob Lemon",
-    "title": "GIS & Remote Sensing Specialist",
-    "org": "LSFSC",
-    "bio": "Jacob supports the project with spatial analysis, burn unit mapping, and aerial imagery interpretation. He is developing the vegetation monitoring protocols that will be used across LSFSC partner sites.",
+    "title": "Monitoring & Community Science Manager",
+    "org": "Trout Unlimited",
+    "bio": "Jake is Trout Unlimited's Monitoring and Community Science Manager, supporting research, monitoring, and inventory efforts across Michigan and Wisconsin. Based in Rockford, MI, he brings expertise in biological monitoring, community science program design, and data collection — skills directly applicable to the species and habitat tracking work on this project.",
     "photo": null,
-    "links": []
+    "links": [
+      { "label": "TU Profile", "url": "https://www.tu.org/staffer/jacob-lemon/" }
+    ]
   },
   {
     "id": "tyler-bassett",
     "name": "Tyler Bassett",
-    "title": "Prescribed Fire Specialist",
-    "org": "Michigan DNR",
-    "bio": "Tyler serves as the prescribed fire lead for the project, working with the DNR fire crew to plan and execute the burn program. He has conducted burns across hundreds of fire-dependent ecosystems in the Great Lakes region.",
+    "title": "Conservation Associate — Botanist",
+    "org": "Michigan Natural Features Inventory (MNFI)",
+    "bio": "Tyler is a botanist and plant ecologist with the Michigan Natural Features Inventory at MSU Extension. He studies the ecology, classification, and management of natural communities with a focus on the rare plant species they support, and has a particular passion for the fire-suppressed prairie-savanna landscapes of the upper Midwest. He holds a Ph.D. in Ecology, Evolutionary Biology, and Behavior from Michigan State University.",
     "photo": null,
-    "links": []
+    "links": [
+      { "label": "MNFI Profile", "url": "https://mnfi.anr.msu.edu/about/staff" }
+    ]
   }
 ]
