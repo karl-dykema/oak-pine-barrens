@@ -1,0 +1,14 @@
+{
+  "id": "photo-001",
+  "filename": "photo-001.jpg",
+  "title": "Lupine patch A — peak bloom",
+  "notes": "East opening, looking northeast. Dense lupine rosettes with ~60% flowering. Good bare sand visible along the deer trail edge.",
+  "date": "2026-06-01",
+  "author": "karl",
+  "tags": ["lupine", "bloom", "east-opening"],
+  "species": ["Lupinus perennis"],
+  "location": { "lat": 43.45670, "lon": -85.58900, "name": "East Opening — Patch A" },
+  "entry_id": "2026-06-01-karner-blue-survey",
+  "hash": null,
+  "created_at": "2026-06-01T09:15:00Z"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "photo-002",
+  "filename": "photo-002.jpg",
+  "title": "Karner blue — male nectaring on lupine",
+  "notes": "T3 transect, around 9:45 AM. Male nectaring actively on lupine flower spike. Wing pattern clearly visible. Female spotted nearby but not photographed.",
+  "date": "2026-06-01",
+  "author": "karl",
+  "tags": ["karner-blue", "butterfly", "lupine", "survey"],
+  "species": ["Lycaeides melissa samuelis", "Lupinus perennis"],
+  "location": { "lat": 43.45660, "lon": -85.58895, "name": "East Opening — T3 Transect" },
+  "entry_id": "2026-06-01-karner-blue-survey",
+  "hash": null,
+  "created_at": "2026-06-01T09:47:00Z"
+}
