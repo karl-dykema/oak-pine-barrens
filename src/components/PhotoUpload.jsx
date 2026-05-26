@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from 'react'
 import { format } from 'date-fns'
 import { compressImage, computeHash, findDuplicate } from '../utils/imageUtils'
 import { scoreImage } from '../utils/inatCV'
+import exifr from 'exifr'
 import { getAllPhotos } from '../utils/parsePhotos'
 import { getAllEntries } from '../utils/parseEntries'
 import { commitPhoto } from '../utils/gitGateway'
@@ -51,24 +52,32 @@ export default function PhotoUpload({ onClose }) {
     setStep('processing')
 
     try {
-      // 1. Compress
+      // 1. Extract EXIF GPS before compression strips it
+      const gps = await exifr.gps(file).catch(() => null)
+
+      // 2. Compress
       const comp = await compressImage(file)
       setCompressed(comp)
       setPreview(URL.createObjectURL(comp))
 
-      // 2. Duplicate detection
+      // 3. Duplicate detection
       const hash = await computeHash(comp)
       const dup = findDuplicate(hash, getAllPhotos())
       setDuplicate(dup)
 
-      // 3. iNat CV — fire and don't block the form
+      // 4. iNat CV — fire and don't block the form
       setCvLoading(true)
       scoreImage(comp)
         .then((results) => { setCvResults(results); setCvLoading(false) })
         .catch(() => { setCvLoading(false) })
 
-      // 4. Pre-fill filename from original
-      setForm((f) => ({ ...f, title: file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ') }))
+      // 5. Pre-fill title and GPS from EXIF
+      setForm((f) => ({
+        ...f,
+        title: file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' '),
+        lat: gps?.latitude  != null ? String(gps.latitude.toFixed(6))  : f.lat,
+        lon: gps?.longitude != null ? String(gps.longitude.toFixed(6)) : f.lon,
+      }))
       setStep('form')
     } catch (e) {
       setError(`Processing failed: ${e.message}`)
@@ -243,11 +252,15 @@ export default function PhotoUpload({ onClose }) {
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-sans font-medium text-bark-600 mb-1">Latitude</label>
+                    <label className="block text-xs font-sans font-medium text-bark-600 mb-1">
+                      Latitude{form.lat ? <span className="text-pine-600 ml-1">· from EXIF</span> : ''}
+                    </label>
                     <input type="number" step="any" className={inputCls} value={form.lat} onChange={setField('lat')} placeholder="43.4566" />
                   </div>
                   <div>
-                    <label className="block text-xs font-sans font-medium text-bark-600 mb-1">Longitude</label>
+                    <label className="block text-xs font-sans font-medium text-bark-600 mb-1">
+                      Longitude{form.lon ? <span className="text-pine-600 ml-1">· from EXIF</span> : ''}
+                    </label>
                     <input type="number" step="any" className={inputCls} value={form.lon} onChange={setField('lon')} placeholder="-85.5892" />
                   </div>
                 </div>
