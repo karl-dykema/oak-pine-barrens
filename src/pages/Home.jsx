@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { MapContainer, TileLayer, Marker, Popup, LayersControl } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
@@ -24,7 +24,19 @@ const stats = [
   { label: 'Season',  value: 'Summer 2026' },
 ]
 
+const LAYERS = {
+  satellite: {
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    attribution: 'Tiles &copy; Esri &mdash; Esri, Maxar, Earthstar Geographics',
+  },
+  street: {
+    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  },
+}
+
 export default function Home() {
+  const [layer, setLayer] = useState('satellite')
   return (
     <div>
       {/* Hero */}
@@ -76,27 +88,18 @@ export default function Home() {
       {/* Map */}
       <section className="max-w-5xl mx-auto px-4 py-10">
         <h2 className="font-serif text-xl font-semibold text-pine-800 mb-4">Site Location</h2>
-        <div className="h-72 sm:h-96 rounded-lg overflow-hidden border border-bark-200 shadow-sm">
+        <div className="relative h-72 sm:h-96 rounded-lg overflow-hidden border border-bark-200 shadow-sm">
           <MapContainer
             center={SITE_COORDS}
-            zoom={13}
+            zoom={15}
             className="h-full w-full"
             scrollWheelZoom={false}
           >
-            <LayersControl position="topright">
-              <LayersControl.BaseLayer name="Street map">
-                <TileLayer
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-              </LayersControl.BaseLayer>
-              <LayersControl.BaseLayer checked name="Satellite">
-                <TileLayer
-                  attribution='Tiles &copy; Esri &mdash; Esri, Maxar, Earthstar Geographics'
-                  url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-                />
-              </LayersControl.BaseLayer>
-            </LayersControl>
+            <TileLayer
+              key={layer}
+              attribution={LAYERS[layer].attribution}
+              url={LAYERS[layer].url}
+            />
             <Marker position={SITE_COORDS}>
               <Popup>
                 <strong>Oak-Pine Barrens Site</strong>
@@ -104,6 +107,21 @@ export default function Home() {
               </Popup>
             </Marker>
           </MapContainer>
+          {/* Layer toggle — sits above the map */}
+          <div className="absolute top-2 right-2 z-[1000] flex rounded overflow-hidden shadow border border-bark-300 text-xs font-sans font-medium">
+            <button
+              onClick={() => setLayer('satellite')}
+              className={`px-2.5 py-1 transition-colors ${layer === 'satellite' ? 'bg-pine-700 text-white' : 'bg-white text-bark-700 hover:bg-bark-50'}`}
+            >
+              Satellite
+            </button>
+            <button
+              onClick={() => setLayer('street')}
+              className={`px-2.5 py-1 transition-colors border-l border-bark-300 ${layer === 'street' ? 'bg-pine-700 text-white' : 'bg-white text-bark-700 hover:bg-bark-50'}`}
+            >
+              Street
+            </button>
+          </div>
         </div>
         <p className="text-sm text-bark-500 mt-2 font-sans">
           43.4566° N, 85.5892° W &mdash; Newaygo County, Michigan
