@@ -1,36 +1,63 @@
-const INAT_URL = 'https://api.inaturalist.org/v1/computervision/score_image'
+const https = require('https')
 
-const cors = {
+const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Content-Type',
 }
 
-export const handler = async (event) => {
-  if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: cors }
+exports.handler = async (event) => {
+  if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS }
   if (event.httpMethod !== 'POST')   return { statusCode: 405, body: 'Method Not Allowed' }
 
   try {
-    const { imageBase64, lat, lng } = JSON.parse(event.body)
+    const { imageBase64 } = JSON.parse(event.body)
+    const imageBuffer = Buffer.from(imageBase64, 'base64')
 
-    // Use native FormData + Blob (Node 18+) — compatible with native fetch
-    const form = new FormData()
-    form.append('image', new Blob([Buffer.from(imageBase64, 'base64')], { type: 'image/jpeg' }), 'photo.jpg')
-    if (lat != null) form.append('lat', String(lat))
-    if (lng != null) form.append('lng', String(lng))
+    const boundary = 'FormBoundary' + Date.now()
+    const CRLF = '\r\n'
 
-    const res = await fetch(INAT_URL, { method: 'POST', body: form })
-    if (!res.ok) throw new Error(`iNat responded ${res.status}`)
+    const preamble = Buffer.from(
+      `--${boundary}${CRLF}` +
+      `Content-Disposition: form-data; name="image"; filename="photo.jpg"${CRLF}` +
+      `Content-Type: image/jpeg${CRLF}${CRLF}`
+    )
+    const epilogue = Buffer.from(`${CRLF}--${boundary}--${CRLF}`)
+    const body = Buffer.concat([preamble, imageBuffer, epilogue])
 
-    const data = await res.json()
+    const data = await new Promise((resolve, reject) => {
+      const req = https.request(
+        {
+          hostname: 'api.inaturalist.org',
+          path: '/v1/computervision/score_image',
+          method: 'POST',
+          headers: {
+            'Content-Type': `multipart/form-data; boundary=${boundary}`,
+            'Content-Length': body.length,
+          },
+        },
+        (res) => {
+          const chunks = []
+          res.on('data', (c) => chunks.push(c))
+          res.on('end', () => {
+            try { resolve(JSON.parse(Buffer.concat(chunks).toString())) }
+            catch (e) { reject(e) }
+          })
+        }
+      )
+      req.on('error', reject)
+      req.write(body)
+      req.end()
+    })
+
     return {
       statusCode: 200,
-      headers: { 'Content-Type': 'application/json', ...cors },
+      headers: { 'Content-Type': 'application/json', ...CORS },
       body: JSON.stringify(data),
     }
   } catch (err) {
     return {
       statusCode: 500,
-      headers: cors,
+      headers: CORS,
       body: JSON.stringify({ error: err.message }),
     }
   }
