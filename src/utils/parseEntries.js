@@ -1,13 +1,23 @@
-import matter from 'gray-matter'
+import { parse as parseYaml } from 'yaml'
 
-// Vite glob import — all .md files in content/entries/ as raw strings
-const rawFiles = import.meta.glob('/content/entries/*.md', { as: 'raw', eager: true })
+// Vite 8 glob syntax: query + import:'default' returns raw string content
+const rawFiles = import.meta.glob('/content/entries/*.md', { query: '?raw', import: 'default', eager: true })
 
-function parseEntry(raw, filename) {
-  const { data, content } = matter(raw)
-  // derive id from filename if not set in front-matter
-  const id = data.id || filename.replace(/^.*\//, '').replace(/\.md$/, '')
-  return { ...data, id, body: content.trim() }
+function parseFrontMatter(src) {
+  const match = src.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/)
+  if (!match) return { data: {}, content: src }
+  try {
+    const data = parseYaml(match[1]) ?? {}
+    return { data, content: match[2].trim() }
+  } catch {
+    return { data: {}, content: src }
+  }
+}
+
+function parseEntry(raw, filepath) {
+  const { data, content } = parseFrontMatter(raw)
+  const id = data.id || filepath.replace(/^.*\//, '').replace(/\.md$/, '')
+  return { ...data, id, body: content }
 }
 
 export function getAllEntries() {
