@@ -80,6 +80,16 @@ export default function About() {
           support from project advisors Rod Denning, Stuart Goldman, Jacob Lemon, and Tyler Bassett.
         </p>
 
+        <h2>Field Journal Scope</h2>
+        <p>
+          The field journal documents work directly connected to this restoration — site visits,
+          burn planning, species surveys, and project coordination. Where relevant, Emily also
+          logs related conservation work from her broader professional role, including volunteer
+          invasive species removal events (such as garlic mustard pulls) and other field activities
+          that inform or connect to the oak-pine barrens restoration. These entries are included
+          with her permission and are clearly attributed.
+        </p>
+
         <h2>Forest Management Plan</h2>
         <p>
           A full forest management plan for the property is available on request. The plan outlines

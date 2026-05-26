@@ -3,6 +3,8 @@ import { format } from 'date-fns'
 import { compressImage, computeHash, findDuplicate } from '../utils/imageUtils'
 import { getAllPhotos } from '../utils/parsePhotos'
 import { getAllEntries } from '../utils/parseEntries'
+import { commitPhoto } from '../utils/githubCommit'
+import { useAuth } from '../context/AuthContext'
 import SpeciesSelector from './SpeciesSelector'
 import exifr from 'exifr'
 
@@ -27,7 +29,8 @@ const EMPTY_FORM = {
 }
 
 export default function PhotoUpload({ onClose }) {
-  const [step, setStep]               = useState('drop')   // drop | processing | form | done
+  const { token, login } = useAuth()
+  const [step, setStep]               = useState('drop')   // drop | processing | form | committing | done
   const [preview, setPreview]         = useState(null)
   const [compressed, setCompressed]   = useState(null)
   const [duplicate, setDuplicate]     = useState(null)
@@ -35,6 +38,7 @@ export default function PhotoUpload({ onClose }) {
   const [form, setForm]               = useState(EMPTY_FORM)
   const [selectedSpecies, setSelectedSpecies] = useState([])
   const [error, setError]             = useState(null)
+  const [commitError, setCommitError] = useState(null)
   const [outputJson, setOutputJson]   = useState(null)
   const inputRef = useRef()
 
@@ -133,8 +137,18 @@ export default function PhotoUpload({ onClose }) {
       created_at: new Date().toISOString(),
     }
 
-    setOutputJson({ id, meta })
-    setStep('done')
+    const output = { id, meta }
+    setOutputJson(output)
+    setCommitError(null)
+
+    if (token) {
+      setStep('committing')
+      commitPhoto(id, compressed, meta, token)
+        .then(() => setStep('done'))
+        .catch((err) => { setCommitError(err.message); setStep('done') })
+    } else {
+      setStep('done')
+    }
   }
 
   function downloadJson() {
@@ -278,19 +292,36 @@ export default function PhotoUpload({ onClose }) {
             </>
           )}
 
+          {/* COMMITTING */}
+          {step === 'committing' && (
+            <div className="text-center py-10 text-bark-500 font-sans text-sm">
+              Saving to repository…
+            </div>
+          )}
+
           {/* DONE */}
           {step === 'done' && outputJson && (
             <div className="flex flex-col gap-4">
-              <div className="bg-sand-50 border border-sand-200 rounded-lg p-4 text-sm font-sans text-bark-700">
-                <p className="font-semibold mb-1">Download both files and commit them to the repo:</p>
-                <ul className="list-disc list-inside text-bark-600 space-y-0.5">
-                  <li>Image → <code className="bg-sand-100 px-1 rounded">public/photos/{outputJson.id}.jpg</code></li>
-                  <li>Metadata → <code className="bg-sand-100 px-1 rounded">data/photos/{outputJson.id}.json</code></li>
-                </ul>
-              </div>
+              {commitError ? (
+                <div className="bg-red-50 border border-red-300 rounded-lg p-4 text-sm font-sans text-red-800">
+                  <p className="font-semibold mb-1">Save failed — download and commit manually:</p>
+                  <p className="text-xs text-red-600 mb-2">{commitError}</p>
+                </div>
+              ) : token ? (
+                <div className="bg-pine-50 border border-pine-200 rounded-lg p-4 text-sm font-sans text-pine-800">
+                  <p className="font-semibold">Saved to repository.</p>
+                  <p className="text-xs text-pine-600 mt-1">Site will rebuild in ~1 minute.</p>
+                </div>
+              ) : (
+                <div className="bg-sand-50 border border-sand-200 rounded-lg p-4 text-sm font-sans text-bark-700">
+                  <p className="font-semibold mb-2">Login to save directly to the repo:</p>
+                  <button onClick={login} className="btn-primary text-sm">Login with GitHub</button>
+                  <p className="mt-3 text-xs text-bark-500">Or download files and commit manually:</p>
+                </div>
+              )}
               <div className="flex gap-3">
-                <button onClick={downloadImage} className="btn-primary">Download image</button>
-                <button onClick={downloadJson} className="btn-outline">Download JSON</button>
+                <button onClick={downloadImage} className="btn-outline text-sm">Download image</button>
+                <button onClick={downloadJson} className="btn-outline text-sm">Download JSON</button>
               </div>
               <pre className="bg-bark-50 border border-bark-200 rounded p-3 text-xs overflow-x-auto font-mono text-bark-700">
                 {JSON.stringify(outputJson.meta, null, 2)}
