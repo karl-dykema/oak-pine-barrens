@@ -1,0 +1,116 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: public/photos
+public_folder: /photos
+
+locale: en
+
+collections:
+  # ── Journal Entries ──────────────────────────────────────────────────────────
+  - name: entries
+    label: Journal Entries
+    folder: content/entries
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{fields.title}}"
+    format: frontmatter
+    extension: md
+    editor:
+      preview: false
+    fields:
+      - { name: date,   label: Date,   widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - name: type
+        label: Entry Type
+        widget: select
+        options:
+          - { label: Observation, value: observation }
+          - { label: Burn,        value: burn }
+          - { label: Survey,      value: survey }
+          - { label: Meeting,     value: meeting }
+          - { label: Note,        value: note }
+      - { name: title,  label: Title,  widget: string }
+      - name: author
+        label: Author
+        widget: select
+        options:
+          - { label: Karl,  value: karl }
+          - { label: Emily, value: emily }
+      - { name: tags,    label: Tags,                  widget: list, required: false }
+      - { name: species, label: "Species (Latin names)", widget: list, required: false }
+      - { name: photos,  label: "Linked Photo IDs",   widget: list, required: false }
+      - name: location
+        label: Location
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: name, label: "Location Name", widget: string,  required: false }
+          - { name: lat,  label: Latitude,        widget: number,  value_type: float, required: false }
+          - { name: lon,  label: Longitude,       widget: number,  value_type: float, required: false }
+      - { name: created_at, label: created_at, widget: hidden, default: "{{now}}" }
+      - { name: updated_at, label: updated_at, widget: hidden, default: "{{now}}" }
+      - { name: body,   label: Body,   widget: markdown }
+
+  # ── Photos ───────────────────────────────────────────────────────────────────
+  - name: photos
+    label: Photos
+    folder: data/photos
+    create: true
+    slug: "{{fields.id}}"
+    format: json
+    extension: json
+    editor:
+      preview: false
+    fields:
+      - { name: id,       label: "Photo ID",  widget: string, hint: "e.g. photo-004 — must be unique" }
+      - { name: filename, label: Image,       widget: image }
+      - { name: title,    label: Title,       widget: string }
+      - { name: notes,    label: Notes,       widget: text,   required: false }
+      - { name: date,     label: Date,        widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - name: author
+        label: Author
+        widget: select
+        options:
+          - { label: Karl,  value: karl }
+          - { label: Emily, value: emily }
+      - { name: tags,     label: Tags,        widget: list, required: false }
+      - { name: species,  label: Species,     widget: list, required: false }
+      - { name: entry_id, label: "Linked Journal Entry ID", widget: string, required: false }
+      - name: location
+        label: Location
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: name, label: "Location Name", widget: string,  required: false }
+          - { name: lat,  label: Latitude,        widget: number,  value_type: float, required: false }
+          - { name: lon,  label: Longitude,       widget: number,  value_type: float, required: false }
+      - { name: hash,       label: hash,       widget: hidden, default: "" }
+      - { name: created_at, label: created_at, widget: hidden, default: "{{now}}" }
+
+  # ── Team ─────────────────────────────────────────────────────────────────────
+  - name: team
+    label: Team
+    files:
+      - name: team
+        label: Team Members
+        file: data/team.json
+        fields:
+          - name: team
+            label: Members
+            widget: list
+            fields:
+              - { name: id,    label: ID,           widget: string }
+              - { name: name,  label: Name,          widget: string }
+              - { name: title, label: Title,         widget: string }
+              - { name: org,   label: Organization,  widget: string, required: false }
+              - { name: bio,   label: Bio,           widget: text }
+              - { name: photo, label: Photo,         widget: image,  required: false }
+              - name: links
+                label: Links
+                widget: list
+                required: false
+                fields:
+                  - { name: label, label: Label, widget: string }
+                  - { name: url,   label: URL,   widget: string }

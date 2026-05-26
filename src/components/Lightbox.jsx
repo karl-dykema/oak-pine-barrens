@@ -1,4 +1,9 @@
 import { useEffect } from 'react'
+
+function photoSrc(filename) {
+  if (!filename) return null
+  return filename.startsWith('/') ? filename : `/photos/${filename}`
+}
 import { Link } from 'react-router-dom'
 import { format, parseISO } from 'date-fns'
 
@@ -36,7 +41,7 @@ export default function Lightbox({ photo, onClose }) {
         {/* Image */}
         <div className="sm:w-3/5 bg-bark-100 flex items-center justify-center rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none overflow-hidden min-h-48">
           <img
-            src={`/photos/${photo.filename}`}
+            src={photoSrc(photo.filename)}
             alt={photo.title}
             className="object-contain max-h-[60vh] sm:max-h-[90vh] w-full"
             onError={(e) => {

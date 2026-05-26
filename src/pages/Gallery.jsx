@@ -1,4 +1,9 @@
 import { useState, lazy, Suspense } from 'react'
+
+function photoSrc(filename) {
+  if (!filename) return null
+  return filename.startsWith('/') ? filename : `/photos/${filename}`
+}
 import { format, parseISO } from 'date-fns'
 import { usePhotos } from '../hooks/usePhotos'
 import { getAllTags, getAllSpecies } from '../utils/parsePhotos'
@@ -22,7 +27,7 @@ function PhotoCard({ photo, onClick }) {
       <div className="aspect-[4/3] bg-bark-100 overflow-hidden relative">
         {!imgError ? (
           <img
-            src={`/photos/${photo.filename}`}
+            src={photoSrc(photo.filename)}
             alt={photo.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             onError={() => setImgError(true)}
